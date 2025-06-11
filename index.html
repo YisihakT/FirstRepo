@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Vue</title>
+    <script src="https://unpkg.com/vue@3.5.16"></script>
+    
+    <style>
+         .box {
+            width: 400px;
+            background-color: #bfc5bb;
+            padding: 100px 0;
+            display: inline-block;
+            text-align: center;
+            margin: 20px;
+
+        }
+        body {
+            margin: 0;
+        }
+         li {
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10px;
+            background-color: #e5e9e2;
+            border-radius: 5px;
+            margin: 20px auto;
+            
+         }
+         li.fav {
+            background-color: pink;
+         }
+         
+         
+    </style>
+</head>
+<body>
+   <h1>Hello, Vue :)</h1> 
+   <div id="app">
+    <ul>
+        <li v-for="book in filterBook" v-on:click="toggle(book)" :class="{fav: book.isFa}">
+            <img :src="book.im" alt="book.title">
+            <h3>{{book.title}}</h3>
+            <p>{{book.author}}</p>
+            <p><em>{{book.age}}</em></p>
+
+        </li>
+    </ul>
+    <button v-on:click="age++">Increase Age:</button>
+    <button v-on:click="age--">Decrease Age:</button>
+    <div @click="changeTitle">Change Book Title</div>
+    <button @click="book">
+        <span v-if="showbook">Hide book</span>
+        <span v-else>Show book</span>
+    
+    </button>
+    <div v-show="showbook">
+        <p>Currently showing books</p>
+    </div>
+    
+     <!--mouse event-->
+     <div class="box" @mouseover="handleEvent">mouseover</div>
+     <div class="box" @mouseleave="handleEvent">mouseleave</div>
+     <div class="box" @dblclick="handleEvent">doubleclick</div>
+     <div class="box" @mousemove="mouseMove">position- {{x}} {{y}}</div>
+
+   </div>
+
+
+   <script>
+     const app = Vue.createApp({
+
+        data () {
+            return {
+                url: 'https://hulu-gebeya.netlify.app/',
+                showbook: true,
+                books: [ 
+                    {title: 'The Pragmatic Programmer', author: 'Andrew Hunt', age: 59, im: 'vpic/3.jpg', isFa: true },
+                    {title: 'Superintelligence', author: 'Nick Bostrom', age: 40, im: '/vpic/2.jpg', isFa: false },
+                    {title: 'The Master Switch', author: 'Tim wu', age: 45, im: '/vpic/1.jpg', isFa:true}
+                ],
+                x:0,
+                y:0
+                
+
+            }
+        },
+        methods: {
+            changeTitle() {
+                this.title = 'The Legend Seeker'
+            },
+            book() {
+                this.showbook = !this.showbook
+
+            },
+            handleEvent(e) {
+                console.log(e, e.ctrlKey)
+                
+            },
+            mouseMove(d) {
+                this.x = d.offsetX
+                this.y = d.offsetY
+            },
+            toggle(book) {
+                book.isFa = !book.isFa
+            
+            }
+
+        },
+        computed: {
+            filterBook(){
+                return this.books.filter((book) => book.isFa 
+
+                )
+            }
+        }
+    
+
+    }) 
+    app.mount("#app")
+   </script>
+</body>
+</html>
